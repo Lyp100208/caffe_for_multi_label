@@ -116,7 +116,34 @@ static bool matchExt(const std::string & fn,
   return false;
 }
 
-bool ReadImageToDatum(const string& filename, const int label,
+// bool ReadImageToDatum(const string& filename, const int label,
+//     const int height, const int width, const bool is_color,
+//     const std::string & encoding, Datum* datum) {
+//   cv::Mat cv_img = ReadImageToCVMat(filename, height, width, is_color);
+//   if (cv_img.data) {
+//     if (encoding.size()) {
+//       if ( (cv_img.channels() == 3) == is_color && !height && !width &&
+//           matchExt(filename, encoding) )
+//         return ReadFileToDatum(filename, label, datum);
+//       std::vector<uchar> buf;
+//       cv::imencode("."+encoding, cv_img, buf);
+//       datum->set_data(std::string(reinterpret_cast<char*>(&buf[0]),
+//                       buf.size()));
+//       datum->set_label(label);
+//       datum->set_encoded(true);
+//       return true;
+//     }
+//     CVMatToDatum(cv_img, datum);
+//     datum->set_label(label);
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+// #endif  // USE_OPENCV
+
+// multi-label
+bool ReadImageToDatum(const string& filename, const vector<int> labels,
     const int height, const int width, const bool is_color,
     const std::string & encoding, Datum* datum) {
   cv::Mat cv_img = ReadImageToCVMat(filename, height, width, is_color);
@@ -124,17 +151,25 @@ bool ReadImageToDatum(const string& filename, const int label,
     if (encoding.size()) {
       if ( (cv_img.channels() == 3) == is_color && !height && !width &&
           matchExt(filename, encoding) )
-        return ReadFileToDatum(filename, label, datum);
+        return ReadFileToDatum(filename, labels, datum);
       std::vector<uchar> buf;
       cv::imencode("."+encoding, cv_img, buf);
       datum->set_data(std::string(reinterpret_cast<char*>(&buf[0]),
                       buf.size()));
-      datum->set_label(label);
+      // std::cout << "filename = " << filename << std::endl; 
+      datum->clear_label();
+      for(int label_id = 0; label_id < labels.size(); ++label_id) {
+        datum->add_label(labels[label_id]);
+        // std::cout << "label = " << labels[label_id] << std::endl;
+      }
       datum->set_encoded(true);
       return true;
     }
     CVMatToDatum(cv_img, datum);
-    datum->set_label(label);
+    datum->clear_label();
+    for(int label_id = 0; label_id < labels.size(); ++label_id) {
+      datum->add_label(labels[label_id]);
+    }
     return true;
   } else {
     return false;
@@ -142,7 +177,28 @@ bool ReadImageToDatum(const string& filename, const int label,
 }
 #endif  // USE_OPENCV
 
-bool ReadFileToDatum(const string& filename, const int label,
+// bool ReadFileToDatum(const string& filename, const int label,
+//     Datum* datum) {
+//   std::streampos size;
+
+//   fstream file(filename.c_str(), ios::in|ios::binary|ios::ate);
+//   if (file.is_open()) {
+//     size = file.tellg();
+//     std::string buffer(size, ' ');
+//     file.seekg(0, ios::beg);
+//     file.read(&buffer[0], size);
+//     file.close();
+//     datum->set_data(buffer);
+//     datum->set_label(label);
+//     datum->set_encoded(true);
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
+// multi-label
+bool ReadFileToDatum(const string& filename, const vector<int> labels,
     Datum* datum) {
   std::streampos size;
 
@@ -154,7 +210,10 @@ bool ReadFileToDatum(const string& filename, const int label,
     file.read(&buffer[0], size);
     file.close();
     datum->set_data(buffer);
-    datum->set_label(label);
+    datum->clear_label();
+    for(int label_id = 0; label_id < labels.size(); ++label_id) {
+      datum->add_label(labels[label_id]);
+    }
     datum->set_encoded(true);
     return true;
   } else {
@@ -174,6 +233,7 @@ cv::Mat DecodeDatumToCVMatNative(const Datum& datum) {
   }
   return cv_img;
 }
+
 cv::Mat DecodeDatumToCVMat(const Datum& datum, bool is_color) {
   cv::Mat cv_img;
   CHECK(datum.encoded()) << "Datum not encoded";

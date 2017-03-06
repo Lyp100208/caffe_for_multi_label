@@ -1,0 +1,42 @@
+I0305 15:05:29.135282 30697 caffe.cpp:218] Using GPUs 0
+I0305 15:05:29.165555 30697 caffe.cpp:223] GPU 0: GeForce GTX TITAN X
+I0305 15:05:29.362910 30697 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 1000
+test_interval: 1000
+base_lr: 0.001
+display: 100
+max_iter: 450000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 10000
+snapshot: 10000
+snapshot_prefix: "models/bupt_wangnet/wangnet_train"
+solver_mode: GPU
+device_id: 0
+net: "models/bupt_wangnet/train_val.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0305 15:05:29.363019 30697 solver.cpp:87] Creating training net from net file: models/bupt_wangnet/train_val.prototxt
+[libprotobuf ERROR google/protobuf/text_format.cc:274] Error parsing text-format caffe.NetParameter: 15:77: String literals cannot cross line boundaries.
+[libprotobuf ERROR google/protobuf/text_format.cc:274] Error parsing text-format caffe.NetParameter: 34:76: String literals cannot cross line boundaries.
+F0305 15:05:29.363199 30697 upgrade_proto.cpp:88] Check failed: ReadProtoFromTextFile(param_file, param) Failed to parse NetParameter file: models/bupt_wangnet/train_val.prototxt
+*** Check failure stack trace: ***
+    @     0x7f9b4bc925cd  google::LogMessage::Fail()
+    @     0x7f9b4bc94433  google::LogMessage::SendToLog()
+    @     0x7f9b4bc9215b  google::LogMessage::Flush()
+    @     0x7f9b4bc94e1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7f9b4c435531  caffe::ReadNetParamsFromTextFileOrDie()
+    @     0x7f9b4c411b7c  caffe::Solver<>::InitTrainNet()
+    @     0x7f9b4c412e75  caffe::Solver<>::Init()
+    @     0x7f9b4c41319f  caffe::Solver<>::Solver()
+    @     0x7f9b4c45bc51  caffe::Creator_SGDSolver<>()
+    @           0x41581a  caffe::SolverRegistry<>::CreateSolver()
+    @           0x40d82d  train()
+    @           0x40a687  main
+    @     0x7f9b4ac03830  __libc_start_main
+    @           0x40b029  _start
+    @              (nil)  (unknown)

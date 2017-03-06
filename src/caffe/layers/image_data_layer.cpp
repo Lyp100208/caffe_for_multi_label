@@ -58,10 +58,10 @@ void ImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
     size_t pos_start = line.find_first_of(' ');
     size_t pos_end = line.find_first_of(' ', pos_start + 1);
     string image_name = line.substr(0, pos_start);
-    int label = 0
+    int label = -1;
     while (pos_start != string::npos) {
       label = atoi(line.substr(pos_start + 1, pos_end).c_str());
-      labels.push_back(label)
+      labels.push_back(label);
       pos_start = pos_end;
       pos_end = line.find_first_of(' ', pos_start + 1);
     }
@@ -152,6 +152,8 @@ void ImageDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
   const int new_width = image_data_param.new_width();
   const bool is_color = image_data_param.is_color();
   string root_folder = image_data_param.root_folder();
+  // multi-label
+  const int dim_label = this->layer_param_.image_data_param().dim_label();
 
   // Reshape according to the first image of each batch
   // on single input batches allows for inputs of varying dimension.
@@ -185,7 +187,12 @@ void ImageDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
     this->data_transformer_->Transform(cv_img, &(this->transformed_data_));
     trans_time += timer.MicroSeconds();
 
-    prefetch_label[item_id] = lines_[lines_id_].second;
+    // prefetch_label[item_id] = lines_[lines_id_].second;
+
+    // multi-label
+    for (int label_id = 0; label_id < dim_label; ++label_id) {
+      prefetch_label[item_id * dim_label + label_id] = lines_[lines_id_].second[label_id];
+    }
     // go to the next iter
     lines_id_++;
     if (lines_id_ >= lines_size) {

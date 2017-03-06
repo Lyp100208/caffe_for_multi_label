@@ -1,0 +1,432 @@
+I0305 15:29:56.975625 18606 caffe.cpp:218] Using GPUs 0
+I0305 15:29:57.030436 18606 caffe.cpp:223] GPU 0: GeForce GTX TITAN X
+I0305 15:29:57.213902 18606 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 1000
+test_interval: 1000
+base_lr: 0.001
+display: 100
+max_iter: 450000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 10000
+snapshot: 10000
+snapshot_prefix: "models/bupt_wangnet/wangnet_train"
+solver_mode: GPU
+device_id: 0
+net: "models/bupt_wangnet/train_val.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0305 15:29:57.214010 18606 solver.cpp:87] Creating training net from net file: models/bupt_wangnet/train_val.prototxt
+I0305 15:29:57.214260 18606 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0305 15:29:57.214275 18606 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_1
+I0305 15:29:57.214282 18606 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_2
+I0305 15:29:57.214287 18606 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_3
+I0305 15:29:57.214292 18606 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_4
+I0305 15:29:57.214388 18606 net.cpp:53] Initializing net from parameters: 
+name: "bupt_wangnet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    mean_file: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto"
+  }
+  data_param {
+    source: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_train"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "slice_label"
+  type: "Slice"
+  bottom: "label"
+  top: "label_1"
+  top: "label_2"
+  top: "label_3"
+  top: "label_4"
+  slice_param {
+    slice_point: 1
+    slice_point: 2
+    slice_point: 3
+    axis: 1
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 20
+    pad: 0
+    kernel_size: 4
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 40
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "pool2"
+  top: "pool2"
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 60
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "pool3"
+  top: "pool3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 80
+    kernel_size: 2
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "conv4"
+  top: "ip1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 120
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2_label_1"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_1"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_1"
+  bottom: "label_1"
+  top: "loss_1"
+}
+layer {
+  name: "ip2_label_2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_2"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_2"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_2"
+  bottom: "label_2"
+  top: "loss_2"
+}
+layer {
+  name: "ip2_label_3"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_3"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_3"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_3"
+  bottom: "label_3"
+  top: "loss_3"
+}
+layer {
+  name: "ip2_label_4"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_4"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_4"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_4"
+  bottom: "label_4"
+  top: "loss_4"
+}
+I0305 15:29:57.214488 18606 layer_factory.hpp:77] Creating layer data
+I0305 15:29:57.214581 18606 db_lmdb.cpp:35] Opened lmdb /home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_train
+I0305 15:29:57.214606 18606 net.cpp:86] Creating Layer data
+I0305 15:29:57.214617 18606 net.cpp:382] data -> data
+I0305 15:29:57.214633 18606 net.cpp:382] data -> label
+I0305 15:29:57.214643 18606 data_transformer.cpp:25] Loading mean file from: /home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+I0305 15:29:57.216483 18606 data_layer.cpp:45] output data size: 256,3,218,178
+shape[0] = 256
+shape[1] = 256
+shape[2] = 256
+shape[3] = 256
+F0305 15:29:57.216503 18606 blob.cpp:35] Check failed: shape[i] <= 0x7fffffff / count_ (256 vs. 127) blob size exceeds INT_MAX
+*** Check failure stack trace: ***
+    @     0x7f4cb3c895cd  google::LogMessage::Fail()
+    @     0x7f4cb3c8b433  google::LogMessage::SendToLog()
+    @     0x7f4cb3c8915b  google::LogMessage::Flush()
+    @     0x7f4cb3c8be1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7f4cb4400d72  caffe::Blob<>::Reshape()
+    @     0x7f4cb4324ac6  caffe::DataLayer<>::DataLayerSetUp()
+    @     0x7f4cb432de7e  caffe::BasePrefetchingDataLayer<>::LayerSetUp()
+    @     0x7f4cb43ef717  caffe::Net<>::Init()
+    @     0x7f4cb43f1e5e  caffe::Net<>::Net()
+    @     0x7f4cb4408ef5  caffe::Solver<>::InitTrainNet()
+    @     0x7f4cb440a2b5  caffe::Solver<>::Init()
+    @     0x7f4cb440a5df  caffe::Solver<>::Solver()
+    @     0x7f4cb4453091  caffe::Creator_SGDSolver<>()
+    @           0x41581a  caffe::SolverRegistry<>::CreateSolver()
+    @           0x40d82d  train()
+    @           0x40a687  main
+    @     0x7f4cb2bfa830  __libc_start_main
+    @           0x40b029  _start
+    @              (nil)  (unknown)

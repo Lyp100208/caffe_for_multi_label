@@ -42,6 +42,7 @@ DEFINE_bool(encoded, false,
     "When this option is on, the encoded image will be save in datum");
 DEFINE_string(encode_type, "",
     "Optional: What type should we encode the image as ('png','jpg',...).");
+DEFINE_int32(dim_label, 1, "The dimension of multi-label");
 
 int main(int argc, char** argv) {
 #ifdef USE_OPENCV
@@ -70,17 +71,46 @@ int main(int argc, char** argv) {
   const bool check_size = FLAGS_check_size;
   const bool encoded = FLAGS_encoded;
   const string encode_type = FLAGS_encode_type;
+  const int dim_label = FLAGS_dim_label;
 
   std::ifstream infile(argv[2]);
-  std::vector<std::pair<std::string, int> > lines;
+  // std::vector<std::pair<std::string, int> > lines;
+  
+  // multi-label
+  std::vector<std::pair<std::string, vector<int> > > lines;
   std::string line;
-  size_t pos;
-  int label;
-  while (std::getline(infile, line)) {
-    pos = line.find_last_of(' ');
-    label = atoi(line.substr(pos + 1).c_str());
-    lines.push_back(std::make_pair(line.substr(0, pos), label));
+  
+  // size_t pos;
+  // int label;
+  // while (std::getline(infile, line)) {
+  //   pos = line.find_last_of(' ');
+  //   label = atoi(line.substr(pos + 1).c_str());
+  //   lines.push_back(std::make_pair(line.substr(0, pos), label));
+  // }
+
+  // multi-label
+  while(std::getline(infile, line)) {
+    // a exmple of a line as follow:
+    // 1.jpg 1 1 1 1
+    // 2.jpg 2 2 2 2
+    vector<int> labels;
+    size_t pos_start = line.find_first_of(' ');
+    size_t pos_end = line.find_first_of(' ', pos_start + 1);
+    string image_name = line.substr(0, pos_start);
+    // std::cout << "image_name = " << image_name << std::endl;
+    int label = -1;
+    while (pos_start != string::npos) {
+      label = atoi(line.substr(pos_start + 1, pos_end).c_str());
+      // std::cout << "label = " << label << std::endl;
+      labels.push_back(label);
+      pos_start = pos_end;
+      pos_end = line.find_first_of(' ', pos_start + 1);
+    }
+    CHECK_EQ(dim_label, labels.size()) << "The dimension of labels must be " 
+      << dim_label << " at line " << line; 
+    lines.push_back(std::make_pair(image_name, labels));
   }
+
   if (FLAGS_shuffle) {
     // randomly shuffle data
     LOG(INFO) << "Shuffling data";

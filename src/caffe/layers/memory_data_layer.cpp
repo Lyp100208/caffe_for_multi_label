@@ -45,7 +45,7 @@ void MemoryDataLayer<Dtype>::AddDatumVector(const vector<Datum>& datum_vector) {
   added_data_.Reshape(num, this->channels_, this->height_, this->width_);
   // multi-label
   // added_label_.Reshape(num, 1, 1, 1);
-  added_label_.Reshape(num, this->dim_label, 1, 1);
+  added_label_.Reshape(num, this->dim_label_, 1, 1);
   // Apply data transformations (mirror, scale, crop...)
   this->data_transformer_->Transform(datum_vector, &added_data_);
   // Copy Labels
@@ -57,7 +57,7 @@ void MemoryDataLayer<Dtype>::AddDatumVector(const vector<Datum>& datum_vector) {
   // multi-label
   for (int item_id = 0; item_id < num; ++item_id) {
     for(int label_id = 0; label_id < this->dim_label_; ++label_id) {
-      top_label[item_id * this->dim_label_ + label_id] = datum_vector[item_id].label(label_id)
+      top_label[item_id * this->dim_label_ + label_id] = datum_vector[item_id].label(label_id);
     }
   }
   // num_images == batch_size_
@@ -69,7 +69,7 @@ void MemoryDataLayer<Dtype>::AddDatumVector(const vector<Datum>& datum_vector) {
 #ifdef USE_OPENCV
 template <typename Dtype>
 void MemoryDataLayer<Dtype>::AddMatVector(const vector<cv::Mat>& mat_vector,
-    const vector<int>& labels) {
+    const vector<vector<int> >& labels) {
   size_t num = mat_vector.size();
   CHECK(!has_new_data_) <<
       "Can't add mat until current data has been consumed.";
@@ -90,7 +90,7 @@ void MemoryDataLayer<Dtype>::AddMatVector(const vector<cv::Mat>& mat_vector,
   // multi-label
   for (int item_id = 0; item_id < num; ++item_id) {
     for(int label_id = 0; label_id < this->dim_label_; ++label_id) {
-      top_label[item_id * this->dim_label_ + label_id] = datum_vector[item_id].label(label_id)
+      top_label[item_id * this->dim_label_ + label_id] = labels[item_id][label_id];
     }
   }
 
@@ -139,7 +139,7 @@ void MemoryDataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
   top[0]->set_cpu_data(this->data_ + this->pos_ * this->size_);
   //top[1]->set_cpu_data(labels_ + pos_);
   // muti-label
-  top[1]->set_cpu_data(this->labels_ * this->dim_label_ + pos_);
+  top[1]->set_cpu_data(this->labels_ + this->pos_ * this->dim_label_);
   this->pos_ = (this->pos_ + this->batch_size_) % this->n_;
   if (this->pos_ == 0)
     this->has_new_data_ = false;

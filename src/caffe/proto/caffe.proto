@@ -805,7 +805,7 @@ message ImageDataParameter {
   optional bool mirror = 6 [default = false];
   optional string root_folder = 12 [default = ""];
   // multi-label
-  optional dim_label = 13 [default = 1];
+  optional uint32 dim_label = 13 [default = 1];
 }
 
 message InfogainLossParameter {
@@ -873,7 +873,7 @@ message MemoryDataParameter {
   optional uint32 height = 3;
   optional uint32 width = 4;
   // multi-label
-  optional int32 dim_label = 5; [default = 1];
+  optional uint32 dim_label = 5 [default = 1];
 }
 
 message MVNParameter {

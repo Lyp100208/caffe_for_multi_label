@@ -1,0 +1,7800 @@
+I0305 15:41:49.699350 27993 caffe.cpp:218] Using GPUs 0
+I0305 15:41:49.752060 27993 caffe.cpp:223] GPU 0: GeForce GTX TITAN X
+I0305 15:41:49.905587 27993 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 1000
+test_interval: 1000
+base_lr: 0.001
+display: 100
+max_iter: 450000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 10000
+snapshot: 10000
+snapshot_prefix: "models/bupt_wangnet/wangnet_train"
+solver_mode: GPU
+device_id: 0
+net: "models/bupt_wangnet/train_val.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0305 15:41:49.905700 27993 solver.cpp:87] Creating training net from net file: models/bupt_wangnet/train_val.prototxt
+I0305 15:41:49.905953 27993 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0305 15:41:49.905967 27993 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_1
+I0305 15:41:49.905974 27993 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_2
+I0305 15:41:49.905979 27993 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_3
+I0305 15:41:49.905982 27993 net.cpp:296] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_4
+I0305 15:41:49.906078 27993 net.cpp:53] Initializing net from parameters: 
+name: "bupt_wangnet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    mean_file: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto"
+  }
+  data_param {
+    source: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_train"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "slice_label"
+  type: "Slice"
+  bottom: "label"
+  top: "label_1"
+  top: "label_2"
+  top: "label_3"
+  top: "label_4"
+  slice_param {
+    slice_point: 1
+    slice_point: 2
+    slice_point: 3
+    axis: 1
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 20
+    pad: 0
+    kernel_size: 4
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 40
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "pool2"
+  top: "pool2"
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 60
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "pool3"
+  top: "pool3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 80
+    kernel_size: 2
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "conv4"
+  top: "ip1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 120
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2_label_1"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_1"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_1"
+  bottom: "label_1"
+  top: "loss_1"
+}
+layer {
+  name: "ip2_label_2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_2"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_2"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_2"
+  bottom: "label_2"
+  top: "loss_2"
+}
+layer {
+  name: "ip2_label_3"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_3"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_3"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_3"
+  bottom: "label_3"
+  top: "loss_3"
+}
+layer {
+  name: "ip2_label_4"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_4"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_4"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_4"
+  bottom: "label_4"
+  top: "loss_4"
+}
+I0305 15:41:49.906182 27993 layer_factory.hpp:77] Creating layer data
+I0305 15:41:49.906273 27993 db_lmdb.cpp:35] Opened lmdb /home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_train
+I0305 15:41:49.906296 27993 net.cpp:86] Creating Layer data
+I0305 15:41:49.906303 27993 net.cpp:382] data -> data
+I0305 15:41:49.906321 27993 net.cpp:382] data -> label
+I0305 15:41:49.906333 27993 data_transformer.cpp:25] Loading mean file from: /home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+I0305 15:41:49.908218 27993 data_layer.cpp:45] output data size: 256,3,218,178
+shape[0] = 256
+shape[1] = 4
+shape[0] = 256
+shape[1] = 4
+shape[0] = 256
+shape[1] = 4
+shape[0] = 256
+shape[1] = 4
+shape[0] = 256
+shape[1] = 4
+I0305 15:41:50.072376 27993 net.cpp:124] Setting up data
+I0305 15:41:50.072396 27993 net.cpp:131] Top shape: 256 3 218 178 (29801472)
+I0305 15:41:50.072401 27993 net.cpp:131] Top shape: 256 4 (1024)
+I0305 15:41:50.072402 27993 net.cpp:139] Memory required for data: 119209984
+I0305 15:41:50.072410 27993 layer_factory.hpp:77] Creating layer slice_label
+I0305 15:41:50.072424 27993 net.cpp:86] Creating Layer slice_label
+I0305 15:41:50.072429 27993 net.cpp:408] slice_label <- label
+I0305 15:41:50.072440 27993 net.cpp:382] slice_label -> label_1
+I0305 15:41:50.072450 27993 net.cpp:382] slice_label -> label_2
+I0305 15:41:50.072456 27993 net.cpp:382] slice_label -> label_3
+I0305 15:41:50.072463 27993 net.cpp:382] slice_label -> label_4
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 1
+I0305 15:41:50.072527 27993 net.cpp:124] Setting up slice_label
+I0305 15:41:50.072535 27993 net.cpp:131] Top shape: 256 1 (256)
+I0305 15:41:50.072538 27993 net.cpp:131] Top shape: 256 1 (256)
+I0305 15:41:50.072542 27993 net.cpp:131] Top shape: 256 1 (256)
+I0305 15:41:50.072547 27993 net.cpp:131] Top shape: 256 1 (256)
+I0305 15:41:50.072549 27993 net.cpp:139] Memory required for data: 119214080
+I0305 15:41:50.072552 27993 layer_factory.hpp:77] Creating layer conv1
+I0305 15:41:50.072569 27993 net.cpp:86] Creating Layer conv1
+I0305 15:41:50.072573 27993 net.cpp:408] conv1 <- data
+I0305 15:41:50.072589 27993 net.cpp:382] conv1 -> conv1
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 20
+shape[1] = 3
+shape[2] = 4
+shape[3] = 4
+shape[0] = 20
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+I0305 15:41:50.189842 27993 net.cpp:124] Setting up conv1
+I0305 15:41:50.189858 27993 net.cpp:131] Top shape: 256 20 215 175 (192640000)
+I0305 15:41:50.189863 27993 net.cpp:139] Memory required for data: 889774080
+I0305 15:41:50.189882 27993 layer_factory.hpp:77] Creating layer pool1
+I0305 15:41:50.189891 27993 net.cpp:86] Creating Layer pool1
+I0305 15:41:50.189895 27993 net.cpp:408] pool1 <- conv1
+I0305 15:41:50.189903 27993 net.cpp:382] pool1 -> pool1
+shape[0] = 256
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 256
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+I0305 15:41:50.189946 27993 net.cpp:124] Setting up pool1
+I0305 15:41:50.189952 27993 net.cpp:131] Top shape: 256 20 108 88 (48660480)
+I0305 15:41:50.189956 27993 net.cpp:139] Memory required for data: 1084416000
+I0305 15:41:50.189960 27993 layer_factory.hpp:77] Creating layer relu1
+I0305 15:41:50.189967 27993 net.cpp:86] Creating Layer relu1
+I0305 15:41:50.189970 27993 net.cpp:408] relu1 <- pool1
+I0305 15:41:50.189975 27993 net.cpp:369] relu1 -> pool1 (in-place)
+shape[0] = 256
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+I0305 15:41:50.190192 27993 net.cpp:124] Setting up relu1
+I0305 15:41:50.190201 27993 net.cpp:131] Top shape: 256 20 108 88 (48660480)
+I0305 15:41:50.190204 27993 net.cpp:139] Memory required for data: 1279057920
+I0305 15:41:50.190208 27993 layer_factory.hpp:77] Creating layer conv2
+I0305 15:41:50.190217 27993 net.cpp:86] Creating Layer conv2
+I0305 15:41:50.190220 27993 net.cpp:408] conv2 <- pool1
+I0305 15:41:50.190227 27993 net.cpp:382] conv2 -> conv2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 40
+shape[1] = 20
+shape[2] = 3
+shape[3] = 3
+shape[0] = 40
+shape[0] = 256
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+I0305 15:41:50.191323 27993 net.cpp:124] Setting up conv2
+I0305 15:41:50.191332 27993 net.cpp:131] Top shape: 256 40 106 86 (93347840)
+I0305 15:41:50.191336 27993 net.cpp:139] Memory required for data: 1652449280
+I0305 15:41:50.191344 27993 layer_factory.hpp:77] Creating layer pool2
+I0305 15:41:50.191349 27993 net.cpp:86] Creating Layer pool2
+I0305 15:41:50.191354 27993 net.cpp:408] pool2 <- conv2
+I0305 15:41:50.191359 27993 net.cpp:382] pool2 -> pool2
+shape[0] = 256
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 256
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+I0305 15:41:50.191395 27993 net.cpp:124] Setting up pool2
+I0305 15:41:50.191401 27993 net.cpp:131] Top shape: 256 40 53 43 (23336960)
+I0305 15:41:50.191404 27993 net.cpp:139] Memory required for data: 1745797120
+I0305 15:41:50.191407 27993 layer_factory.hpp:77] Creating layer relu2
+I0305 15:41:50.191412 27993 net.cpp:86] Creating Layer relu2
+I0305 15:41:50.191416 27993 net.cpp:408] relu2 <- pool2
+I0305 15:41:50.191421 27993 net.cpp:369] relu2 -> pool2 (in-place)
+shape[0] = 256
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+I0305 15:41:50.191529 27993 net.cpp:124] Setting up relu2
+I0305 15:41:50.191535 27993 net.cpp:131] Top shape: 256 40 53 43 (23336960)
+I0305 15:41:50.191539 27993 net.cpp:139] Memory required for data: 1839144960
+I0305 15:41:50.191540 27993 layer_factory.hpp:77] Creating layer conv3
+I0305 15:41:50.191550 27993 net.cpp:86] Creating Layer conv3
+I0305 15:41:50.191552 27993 net.cpp:408] conv3 <- pool2
+I0305 15:41:50.191558 27993 net.cpp:382] conv3 -> conv3
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 60
+shape[1] = 40
+shape[2] = 5
+shape[3] = 5
+shape[0] = 60
+shape[0] = 256
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+I0305 15:41:50.192739 27993 net.cpp:124] Setting up conv3
+I0305 15:41:50.192749 27993 net.cpp:131] Top shape: 256 60 49 39 (29352960)
+I0305 15:41:50.192752 27993 net.cpp:139] Memory required for data: 1956556800
+I0305 15:41:50.192760 27993 layer_factory.hpp:77] Creating layer pool3
+I0305 15:41:50.192766 27993 net.cpp:86] Creating Layer pool3
+I0305 15:41:50.192770 27993 net.cpp:408] pool3 <- conv3
+I0305 15:41:50.192776 27993 net.cpp:382] pool3 -> pool3
+shape[0] = 256
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 256
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+I0305 15:41:50.192813 27993 net.cpp:124] Setting up pool3
+I0305 15:41:50.192819 27993 net.cpp:131] Top shape: 256 60 25 20 (7680000)
+I0305 15:41:50.192822 27993 net.cpp:139] Memory required for data: 1987276800
+I0305 15:41:50.192826 27993 layer_factory.hpp:77] Creating layer relu3
+I0305 15:41:50.192831 27993 net.cpp:86] Creating Layer relu3
+I0305 15:41:50.192833 27993 net.cpp:408] relu3 <- pool3
+I0305 15:41:50.192838 27993 net.cpp:369] relu3 -> pool3 (in-place)
+shape[0] = 256
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+I0305 15:41:50.192952 27993 net.cpp:124] Setting up relu3
+I0305 15:41:50.192960 27993 net.cpp:131] Top shape: 256 60 25 20 (7680000)
+I0305 15:41:50.192963 27993 net.cpp:139] Memory required for data: 2017996800
+I0305 15:41:50.192966 27993 layer_factory.hpp:77] Creating layer conv4
+I0305 15:41:50.192973 27993 net.cpp:86] Creating Layer conv4
+I0305 15:41:50.192976 27993 net.cpp:408] conv4 <- pool3
+I0305 15:41:50.192992 27993 net.cpp:382] conv4 -> conv4
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 80
+shape[1] = 60
+shape[2] = 2
+shape[3] = 2
+shape[0] = 80
+shape[0] = 256
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+I0305 15:41:50.193867 27993 net.cpp:124] Setting up conv4
+I0305 15:41:50.193876 27993 net.cpp:131] Top shape: 256 80 24 19 (9338880)
+I0305 15:41:50.193879 27993 net.cpp:139] Memory required for data: 2055352320
+I0305 15:41:50.193886 27993 layer_factory.hpp:77] Creating layer ip1
+I0305 15:41:50.193892 27993 net.cpp:86] Creating Layer ip1
+I0305 15:41:50.193897 27993 net.cpp:408] ip1 <- conv4
+I0305 15:41:50.193902 27993 net.cpp:382] ip1 -> ip1
+shape[0] = 120
+shape[1] = 36480
+shape[0] = 120
+shape[0] = 256
+shape[1] = 120
+shape[0] = 256
+I0305 15:41:50.224787 27993 net.cpp:124] Setting up ip1
+I0305 15:41:50.224804 27993 net.cpp:131] Top shape: 256 120 (30720)
+I0305 15:41:50.224808 27993 net.cpp:139] Memory required for data: 2055475200
+I0305 15:41:50.224822 27993 layer_factory.hpp:77] Creating layer ip1_ip1_0_split
+I0305 15:41:50.224830 27993 net.cpp:86] Creating Layer ip1_ip1_0_split
+I0305 15:41:50.224835 27993 net.cpp:408] ip1_ip1_0_split <- ip1
+I0305 15:41:50.224843 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_0
+I0305 15:41:50.224851 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_1
+I0305 15:41:50.224858 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_2
+I0305 15:41:50.224866 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_3
+shape[0] = 256
+shape[1] = 120
+shape[0] = 256
+shape[1] = 120
+shape[0] = 256
+shape[1] = 120
+shape[0] = 256
+shape[1] = 120
+I0305 15:41:50.224920 27993 net.cpp:124] Setting up ip1_ip1_0_split
+I0305 15:41:50.224925 27993 net.cpp:131] Top shape: 256 120 (30720)
+I0305 15:41:50.224931 27993 net.cpp:131] Top shape: 256 120 (30720)
+I0305 15:41:50.224934 27993 net.cpp:131] Top shape: 256 120 (30720)
+I0305 15:41:50.224938 27993 net.cpp:131] Top shape: 256 120 (30720)
+I0305 15:41:50.224941 27993 net.cpp:139] Memory required for data: 2055966720
+I0305 15:41:50.224943 27993 layer_factory.hpp:77] Creating layer ip2_label_1
+I0305 15:41:50.224949 27993 net.cpp:86] Creating Layer ip2_label_1
+I0305 15:41:50.224952 27993 net.cpp:408] ip2_label_1 <- ip1_ip1_0_split_0
+I0305 15:41:50.224957 27993 net.cpp:382] ip2_label_1 -> ip2_label_1
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 256
+shape[1] = 2
+shape[0] = 256
+I0305 15:41:50.225041 27993 net.cpp:124] Setting up ip2_label_1
+I0305 15:41:50.225046 27993 net.cpp:131] Top shape: 256 2 (512)
+I0305 15:41:50.225049 27993 net.cpp:139] Memory required for data: 2055968768
+I0305 15:41:50.225054 27993 layer_factory.hpp:77] Creating layer loss_1
+I0305 15:41:50.225061 27993 net.cpp:86] Creating Layer loss_1
+I0305 15:41:50.225065 27993 net.cpp:408] loss_1 <- ip2_label_1
+I0305 15:41:50.225069 27993 net.cpp:408] loss_1 <- label_1
+I0305 15:41:50.225075 27993 net.cpp:382] loss_1 -> loss_1
+I0305 15:41:50.225083 27993 layer_factory.hpp:77] Creating layer loss_1
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+I0305 15:41:50.226579 27993 net.cpp:124] Setting up loss_1
+I0305 15:41:50.226586 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.226589 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.226608 27993 net.cpp:139] Memory required for data: 2055968772
+I0305 15:41:50.226613 27993 layer_factory.hpp:77] Creating layer ip2_label_2
+I0305 15:41:50.226620 27993 net.cpp:86] Creating Layer ip2_label_2
+I0305 15:41:50.226624 27993 net.cpp:408] ip2_label_2 <- ip1_ip1_0_split_1
+I0305 15:41:50.226629 27993 net.cpp:382] ip2_label_2 -> ip2_label_2
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 256
+shape[1] = 2
+shape[0] = 256
+I0305 15:41:50.226717 27993 net.cpp:124] Setting up ip2_label_2
+I0305 15:41:50.226722 27993 net.cpp:131] Top shape: 256 2 (512)
+I0305 15:41:50.226725 27993 net.cpp:139] Memory required for data: 2055970820
+I0305 15:41:50.226732 27993 layer_factory.hpp:77] Creating layer loss_2
+I0305 15:41:50.226737 27993 net.cpp:86] Creating Layer loss_2
+I0305 15:41:50.226740 27993 net.cpp:408] loss_2 <- ip2_label_2
+I0305 15:41:50.226744 27993 net.cpp:408] loss_2 <- label_2
+I0305 15:41:50.226749 27993 net.cpp:382] loss_2 -> loss_2
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+I0305 15:41:50.226757 27993 layer_factory.hpp:77] Creating layer loss_2
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+I0305 15:41:50.244931 27993 net.cpp:124] Setting up loss_2
+I0305 15:41:50.244937 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.244940 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.244946 27993 net.cpp:139] Memory required for data: 2055970824
+I0305 15:41:50.244949 27993 layer_factory.hpp:77] Creating layer ip2_label_3
+I0305 15:41:50.244956 27993 net.cpp:86] Creating Layer ip2_label_3
+I0305 15:41:50.244969 27993 net.cpp:408] ip2_label_3 <- ip1_ip1_0_split_2
+I0305 15:41:50.244976 27993 net.cpp:382] ip2_label_3 -> ip2_label_3
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 256
+shape[1] = 2
+shape[0] = 256
+I0305 15:41:50.245066 27993 net.cpp:124] Setting up ip2_label_3
+I0305 15:41:50.245072 27993 net.cpp:131] Top shape: 256 2 (512)
+I0305 15:41:50.245074 27993 net.cpp:139] Memory required for data: 2055972872
+I0305 15:41:50.245080 27993 layer_factory.hpp:77] Creating layer loss_3
+I0305 15:41:50.245086 27993 net.cpp:86] Creating Layer loss_3
+I0305 15:41:50.245090 27993 net.cpp:408] loss_3 <- ip2_label_3
+I0305 15:41:50.245095 27993 net.cpp:408] loss_3 <- label_3
+I0305 15:41:50.245100 27993 net.cpp:382] loss_3 -> loss_3
+I0305 15:41:50.245106 27993 layer_factory.hpp:77] Creating layer loss_3
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+I0305 15:41:50.245403 27993 net.cpp:124] Setting up loss_3
+I0305 15:41:50.245409 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.245411 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.245416 27993 net.cpp:139] Memory required for data: 2055972876
+I0305 15:41:50.245419 27993 layer_factory.hpp:77] Creating layer ip2_label_4
+I0305 15:41:50.245425 27993 net.cpp:86] Creating Layer ip2_label_4
+I0305 15:41:50.245429 27993 net.cpp:408] ip2_label_4 <- ip1_ip1_0_split_3
+I0305 15:41:50.245435 27993 net.cpp:382] ip2_label_4 -> ip2_label_4
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 256
+shape[1] = 2
+shape[0] = 256
+I0305 15:41:50.245522 27993 net.cpp:124] Setting up ip2_label_4
+I0305 15:41:50.245528 27993 net.cpp:131] Top shape: 256 2 (512)
+I0305 15:41:50.245530 27993 net.cpp:139] Memory required for data: 2055974924
+I0305 15:41:50.245538 27993 layer_factory.hpp:77] Creating layer loss_4
+I0305 15:41:50.245544 27993 net.cpp:86] Creating Layer loss_4
+I0305 15:41:50.245548 27993 net.cpp:408] loss_4 <- ip2_label_4
+I0305 15:41:50.245553 27993 net.cpp:408] loss_4 <- label_4
+I0305 15:41:50.245558 27993 net.cpp:382] loss_4 -> loss_4
+I0305 15:41:50.245565 27993 layer_factory.hpp:77] Creating layer loss_4
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+shape[0] = 256
+shape[1] = 2
+shape[0] = 2
+shape[0] = 256
+shape[1] = 1
+I0305 15:41:50.245739 27993 net.cpp:124] Setting up loss_4
+I0305 15:41:50.245744 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.245748 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.245754 27993 net.cpp:139] Memory required for data: 2055974928
+I0305 15:41:50.245756 27993 net.cpp:200] loss_4 needs backward computation.
+I0305 15:41:50.245764 27993 net.cpp:200] ip2_label_4 needs backward computation.
+I0305 15:41:50.245767 27993 net.cpp:200] loss_3 needs backward computation.
+I0305 15:41:50.245771 27993 net.cpp:200] ip2_label_3 needs backward computation.
+I0305 15:41:50.245775 27993 net.cpp:200] loss_2 needs backward computation.
+I0305 15:41:50.245779 27993 net.cpp:200] ip2_label_2 needs backward computation.
+I0305 15:41:50.245782 27993 net.cpp:200] loss_1 needs backward computation.
+I0305 15:41:50.245786 27993 net.cpp:200] ip2_label_1 needs backward computation.
+I0305 15:41:50.245790 27993 net.cpp:200] ip1_ip1_0_split needs backward computation.
+I0305 15:41:50.245793 27993 net.cpp:200] ip1 needs backward computation.
+I0305 15:41:50.245797 27993 net.cpp:200] conv4 needs backward computation.
+I0305 15:41:50.245800 27993 net.cpp:200] relu3 needs backward computation.
+I0305 15:41:50.245803 27993 net.cpp:200] pool3 needs backward computation.
+I0305 15:41:50.245807 27993 net.cpp:200] conv3 needs backward computation.
+I0305 15:41:50.245810 27993 net.cpp:200] relu2 needs backward computation.
+I0305 15:41:50.245813 27993 net.cpp:200] pool2 needs backward computation.
+I0305 15:41:50.245816 27993 net.cpp:200] conv2 needs backward computation.
+I0305 15:41:50.245820 27993 net.cpp:200] relu1 needs backward computation.
+I0305 15:41:50.245822 27993 net.cpp:200] pool1 needs backward computation.
+I0305 15:41:50.245826 27993 net.cpp:200] conv1 needs backward computation.
+I0305 15:41:50.245829 27993 net.cpp:202] slice_label does not need backward computation.
+I0305 15:41:50.245834 27993 net.cpp:202] data does not need backward computation.
+I0305 15:41:50.245838 27993 net.cpp:244] This network produces output loss_1
+I0305 15:41:50.245841 27993 net.cpp:244] This network produces output loss_2
+I0305 15:41:50.245844 27993 net.cpp:244] This network produces output loss_3
+I0305 15:41:50.245848 27993 net.cpp:244] This network produces output loss_4
+I0305 15:41:50.245869 27993 net.cpp:257] Network initialization done.
+I0305 15:41:50.246058 27993 solver.cpp:173] Creating test net (#0) specified by net file: models/bupt_wangnet/train_val.prototxt
+I0305 15:41:50.246084 27993 net.cpp:296] The NetState phase (1) differed from the phase (0) specified by a rule in layer data
+I0305 15:41:50.246198 27993 net.cpp:53] Initializing net from parameters: 
+name: "bupt_wangnet"
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    mean_file: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto"
+  }
+  data_param {
+    source: "/home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_test"
+    batch_size: 50
+    backend: LMDB
+  }
+}
+layer {
+  name: "slice_label"
+  type: "Slice"
+  bottom: "label"
+  top: "label_1"
+  top: "label_2"
+  top: "label_3"
+  top: "label_4"
+  slice_param {
+    slice_point: 1
+    slice_point: 2
+    slice_point: 3
+    axis: 1
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 20
+    pad: 0
+    kernel_size: 4
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 40
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "pool2"
+  top: "pool2"
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 60
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "pool3"
+  top: "pool3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 80
+    kernel_size: 2
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "conv4"
+  top: "ip1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 120
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2_label_1"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_1"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy_1"
+  type: "Accuracy"
+  bottom: "ip2_label_1"
+  bottom: "label_1"
+  top: "accuracy_1"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_1"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_1"
+  bottom: "label_1"
+  top: "loss_1"
+}
+layer {
+  name: "ip2_label_2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_2"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy_2"
+  type: "Accuracy"
+  bottom: "ip2_label_2"
+  bottom: "label_2"
+  top: "accuracy_2"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_2"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_2"
+  bottom: "label_2"
+  top: "loss_2"
+}
+layer {
+  name: "ip2_label_3"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_3"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy_3"
+  type: "Accuracy"
+  bottom: "ip2_label_3"
+  bottom: "label_3"
+  top: "accuracy_3"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_3"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_3"
+  bottom: "label_3"
+  top: "loss_3"
+}
+layer {
+  name: "ip2_label_4"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2_label_4"
+  param {
+    lr_mult: 1
+    decay_mult: 250
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy_4"
+  type: "Accuracy"
+  bottom: "ip2_label_4"
+  bottom: "label_4"
+  top: "accuracy_4"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_4"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_label_4"
+  bottom: "label_4"
+  top: "loss_4"
+}
+I0305 15:41:50.246336 27993 layer_factory.hpp:77] Creating layer data
+I0305 15:41:50.246597 27993 db_lmdb.cpp:35] Opened lmdb /home/wang/disk_4T/wang_data/convert_dataset/CelebA/lmdb_test
+I0305 15:41:50.246614 27993 net.cpp:86] Creating Layer data
+I0305 15:41:50.246623 27993 net.cpp:382] data -> data
+I0305 15:41:50.246631 27993 net.cpp:382] data -> label
+I0305 15:41:50.246636 27993 data_transformer.cpp:25] Loading mean file from: /home/wang/disk_4T/wang_data/convert_dataset/CelebA/CelebA.binaryproto
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+I0305 15:41:50.247495 27993 data_layer.cpp:45] output data size: 50,3,218,178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 4
+I0305 15:41:50.280973 27993 net.cpp:124] Setting up data
+I0305 15:41:50.280994 27993 net.cpp:131] Top shape: 50 3 218 178 (5820600)
+I0305 15:41:50.280997 27993 net.cpp:131] Top shape: 50 4 (200)
+I0305 15:41:50.280998 27993 net.cpp:139] Memory required for data: 23283200
+I0305 15:41:50.281003 27993 layer_factory.hpp:77] Creating layer slice_label
+I0305 15:41:50.281013 27993 net.cpp:86] Creating Layer slice_label
+I0305 15:41:50.281016 27993 net.cpp:408] slice_label <- label
+I0305 15:41:50.281021 27993 net.cpp:382] slice_label -> label_1
+I0305 15:41:50.281028 27993 net.cpp:382] slice_label -> label_2
+I0305 15:41:50.281031 27993 net.cpp:382] slice_label -> label_3
+I0305 15:41:50.281034 27993 net.cpp:382] slice_label -> label_4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.281134 27993 net.cpp:124] Setting up slice_label
+I0305 15:41:50.281138 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281141 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281142 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281144 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281146 27993 net.cpp:139] Memory required for data: 23284000
+I0305 15:41:50.281147 27993 layer_factory.hpp:77] Creating layer label_1_slice_label_0_split
+I0305 15:41:50.281152 27993 net.cpp:86] Creating Layer label_1_slice_label_0_split
+I0305 15:41:50.281153 27993 net.cpp:408] label_1_slice_label_0_split <- label_1
+I0305 15:41:50.281157 27993 net.cpp:382] label_1_slice_label_0_split -> label_1_slice_label_0_split_0
+I0305 15:41:50.281159 27993 net.cpp:382] label_1_slice_label_0_split -> label_1_slice_label_0_split_1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.281189 27993 net.cpp:124] Setting up label_1_slice_label_0_split
+I0305 15:41:50.281204 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281206 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281208 27993 net.cpp:139] Memory required for data: 23284400
+I0305 15:41:50.281209 27993 layer_factory.hpp:77] Creating layer label_2_slice_label_1_split
+I0305 15:41:50.281213 27993 net.cpp:86] Creating Layer label_2_slice_label_1_split
+I0305 15:41:50.281214 27993 net.cpp:408] label_2_slice_label_1_split <- label_2
+I0305 15:41:50.281217 27993 net.cpp:382] label_2_slice_label_1_split -> label_2_slice_label_1_split_0
+I0305 15:41:50.281221 27993 net.cpp:382] label_2_slice_label_1_split -> label_2_slice_label_1_split_1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.281244 27993 net.cpp:124] Setting up label_2_slice_label_1_split
+I0305 15:41:50.281247 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281249 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281250 27993 net.cpp:139] Memory required for data: 23284800
+I0305 15:41:50.281251 27993 layer_factory.hpp:77] Creating layer label_3_slice_label_2_split
+I0305 15:41:50.281255 27993 net.cpp:86] Creating Layer label_3_slice_label_2_split
+I0305 15:41:50.281256 27993 net.cpp:408] label_3_slice_label_2_split <- label_3
+I0305 15:41:50.281260 27993 net.cpp:382] label_3_slice_label_2_split -> label_3_slice_label_2_split_0
+I0305 15:41:50.281262 27993 net.cpp:382] label_3_slice_label_2_split -> label_3_slice_label_2_split_1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.281283 27993 net.cpp:124] Setting up label_3_slice_label_2_split
+I0305 15:41:50.281286 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281287 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281288 27993 net.cpp:139] Memory required for data: 23285200
+I0305 15:41:50.281289 27993 layer_factory.hpp:77] Creating layer label_4_slice_label_3_split
+I0305 15:41:50.281292 27993 net.cpp:86] Creating Layer label_4_slice_label_3_split
+I0305 15:41:50.281293 27993 net.cpp:408] label_4_slice_label_3_split <- label_4
+I0305 15:41:50.281296 27993 net.cpp:382] label_4_slice_label_3_split -> label_4_slice_label_3_split_0
+I0305 15:41:50.281299 27993 net.cpp:382] label_4_slice_label_3_split -> label_4_slice_label_3_split_1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.281318 27993 net.cpp:124] Setting up label_4_slice_label_3_split
+I0305 15:41:50.281322 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281322 27993 net.cpp:131] Top shape: 50 1 (50)
+I0305 15:41:50.281324 27993 net.cpp:139] Memory required for data: 23285600
+I0305 15:41:50.281325 27993 layer_factory.hpp:77] Creating layer conv1
+I0305 15:41:50.281332 27993 net.cpp:86] Creating Layer conv1
+I0305 15:41:50.281335 27993 net.cpp:408] conv1 <- data
+I0305 15:41:50.281338 27993 net.cpp:382] conv1 -> conv1
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 20
+shape[1] = 3
+shape[2] = 4
+shape[3] = 4
+shape[0] = 20
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+I0305 15:41:50.285794 27993 net.cpp:124] Setting up conv1
+I0305 15:41:50.285804 27993 net.cpp:131] Top shape: 50 20 215 175 (37625000)
+I0305 15:41:50.285805 27993 net.cpp:139] Memory required for data: 173785600
+I0305 15:41:50.285812 27993 layer_factory.hpp:77] Creating layer pool1
+I0305 15:41:50.285817 27993 net.cpp:86] Creating Layer pool1
+I0305 15:41:50.285820 27993 net.cpp:408] pool1 <- conv1
+I0305 15:41:50.285823 27993 net.cpp:382] pool1 -> pool1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+I0305 15:41:50.285856 27993 net.cpp:124] Setting up pool1
+I0305 15:41:50.285858 27993 net.cpp:131] Top shape: 50 20 108 88 (9504000)
+I0305 15:41:50.285859 27993 net.cpp:139] Memory required for data: 211801600
+I0305 15:41:50.285861 27993 layer_factory.hpp:77] Creating layer relu1
+I0305 15:41:50.285866 27993 net.cpp:86] Creating Layer relu1
+I0305 15:41:50.285867 27993 net.cpp:408] relu1 <- pool1
+I0305 15:41:50.285871 27993 net.cpp:369] relu1 -> pool1 (in-place)
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+I0305 15:41:50.286109 27993 net.cpp:124] Setting up relu1
+I0305 15:41:50.286115 27993 net.cpp:131] Top shape: 50 20 108 88 (9504000)
+I0305 15:41:50.286118 27993 net.cpp:139] Memory required for data: 249817600
+I0305 15:41:50.286119 27993 layer_factory.hpp:77] Creating layer conv2
+I0305 15:41:50.286125 27993 net.cpp:86] Creating Layer conv2
+I0305 15:41:50.286128 27993 net.cpp:408] conv2 <- pool1
+I0305 15:41:50.286131 27993 net.cpp:382] conv2 -> conv2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 40
+shape[1] = 20
+shape[2] = 3
+shape[3] = 3
+shape[0] = 40
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+I0305 15:41:50.286873 27993 net.cpp:124] Setting up conv2
+I0305 15:41:50.286893 27993 net.cpp:131] Top shape: 50 40 106 86 (18232000)
+I0305 15:41:50.286897 27993 net.cpp:139] Memory required for data: 322745600
+I0305 15:41:50.286902 27993 layer_factory.hpp:77] Creating layer pool2
+I0305 15:41:50.286907 27993 net.cpp:86] Creating Layer pool2
+I0305 15:41:50.286908 27993 net.cpp:408] pool2 <- conv2
+I0305 15:41:50.286911 27993 net.cpp:382] pool2 -> pool2
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+I0305 15:41:50.286942 27993 net.cpp:124] Setting up pool2
+I0305 15:41:50.286947 27993 net.cpp:131] Top shape: 50 40 53 43 (4558000)
+I0305 15:41:50.286947 27993 net.cpp:139] Memory required for data: 340977600
+I0305 15:41:50.286949 27993 layer_factory.hpp:77] Creating layer relu2
+I0305 15:41:50.286952 27993 net.cpp:86] Creating Layer relu2
+I0305 15:41:50.286953 27993 net.cpp:408] relu2 <- pool2
+I0305 15:41:50.286955 27993 net.cpp:369] relu2 -> pool2 (in-place)
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+I0305 15:41:50.287070 27993 net.cpp:124] Setting up relu2
+I0305 15:41:50.287075 27993 net.cpp:131] Top shape: 50 40 53 43 (4558000)
+I0305 15:41:50.287077 27993 net.cpp:139] Memory required for data: 359209600
+I0305 15:41:50.287078 27993 layer_factory.hpp:77] Creating layer conv3
+I0305 15:41:50.287084 27993 net.cpp:86] Creating Layer conv3
+I0305 15:41:50.287086 27993 net.cpp:408] conv3 <- pool2
+I0305 15:41:50.287091 27993 net.cpp:382] conv3 -> conv3
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 60
+shape[1] = 40
+shape[2] = 5
+shape[3] = 5
+shape[0] = 60
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+I0305 15:41:50.288127 27993 net.cpp:124] Setting up conv3
+I0305 15:41:50.288136 27993 net.cpp:131] Top shape: 50 60 49 39 (5733000)
+I0305 15:41:50.288139 27993 net.cpp:139] Memory required for data: 382141600
+I0305 15:41:50.288144 27993 layer_factory.hpp:77] Creating layer pool3
+I0305 15:41:50.288151 27993 net.cpp:86] Creating Layer pool3
+I0305 15:41:50.288156 27993 net.cpp:408] pool3 <- conv3
+I0305 15:41:50.288161 27993 net.cpp:382] pool3 -> pool3
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+I0305 15:41:50.288192 27993 net.cpp:124] Setting up pool3
+I0305 15:41:50.288195 27993 net.cpp:131] Top shape: 50 60 25 20 (1500000)
+I0305 15:41:50.288197 27993 net.cpp:139] Memory required for data: 388141600
+I0305 15:41:50.288198 27993 layer_factory.hpp:77] Creating layer relu3
+I0305 15:41:50.288202 27993 net.cpp:86] Creating Layer relu3
+I0305 15:41:50.288203 27993 net.cpp:408] relu3 <- pool3
+I0305 15:41:50.288205 27993 net.cpp:369] relu3 -> pool3 (in-place)
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+I0305 15:41:50.288321 27993 net.cpp:124] Setting up relu3
+I0305 15:41:50.288326 27993 net.cpp:131] Top shape: 50 60 25 20 (1500000)
+I0305 15:41:50.288326 27993 net.cpp:139] Memory required for data: 394141600
+I0305 15:41:50.288328 27993 layer_factory.hpp:77] Creating layer conv4
+I0305 15:41:50.288333 27993 net.cpp:86] Creating Layer conv4
+I0305 15:41:50.288336 27993 net.cpp:408] conv4 <- pool3
+I0305 15:41:50.288338 27993 net.cpp:382] conv4 -> conv4
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 80
+shape[1] = 60
+shape[2] = 2
+shape[3] = 2
+shape[0] = 80
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+I0305 15:41:50.289115 27993 net.cpp:124] Setting up conv4
+I0305 15:41:50.289124 27993 net.cpp:131] Top shape: 50 80 24 19 (1824000)
+I0305 15:41:50.289125 27993 net.cpp:139] Memory required for data: 401437600
+I0305 15:41:50.289131 27993 layer_factory.hpp:77] Creating layer ip1
+I0305 15:41:50.289140 27993 net.cpp:86] Creating Layer ip1
+I0305 15:41:50.289144 27993 net.cpp:408] ip1 <- conv4
+I0305 15:41:50.289146 27993 net.cpp:382] ip1 -> ip1
+shape[0] = 120
+shape[1] = 36480
+shape[0] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+I0305 15:41:50.320228 27993 net.cpp:124] Setting up ip1
+I0305 15:41:50.320247 27993 net.cpp:131] Top shape: 50 120 (6000)
+I0305 15:41:50.320251 27993 net.cpp:139] Memory required for data: 401461600
+I0305 15:41:50.320266 27993 layer_factory.hpp:77] Creating layer ip1_ip1_0_split
+I0305 15:41:50.320276 27993 net.cpp:86] Creating Layer ip1_ip1_0_split
+I0305 15:41:50.320282 27993 net.cpp:408] ip1_ip1_0_split <- ip1
+I0305 15:41:50.320287 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_0
+I0305 15:41:50.320297 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_1
+I0305 15:41:50.320302 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_2
+I0305 15:41:50.320308 27993 net.cpp:382] ip1_ip1_0_split -> ip1_ip1_0_split_3
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+I0305 15:41:50.320376 27993 net.cpp:124] Setting up ip1_ip1_0_split
+I0305 15:41:50.320379 27993 net.cpp:131] Top shape: 50 120 (6000)
+I0305 15:41:50.320381 27993 net.cpp:131] Top shape: 50 120 (6000)
+I0305 15:41:50.320384 27993 net.cpp:131] Top shape: 50 120 (6000)
+I0305 15:41:50.320399 27993 net.cpp:131] Top shape: 50 120 (6000)
+I0305 15:41:50.320400 27993 net.cpp:139] Memory required for data: 401557600
+I0305 15:41:50.320402 27993 layer_factory.hpp:77] Creating layer ip2_label_1
+I0305 15:41:50.320407 27993 net.cpp:86] Creating Layer ip2_label_1
+I0305 15:41:50.320410 27993 net.cpp:408] ip2_label_1 <- ip1_ip1_0_split_0
+I0305 15:41:50.320413 27993 net.cpp:382] ip2_label_1 -> ip2_label_1
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+I0305 15:41:50.320516 27993 net.cpp:124] Setting up ip2_label_1
+I0305 15:41:50.320521 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.320523 27993 net.cpp:139] Memory required for data: 401558000
+I0305 15:41:50.320528 27993 layer_factory.hpp:77] Creating layer ip2_label_1_ip2_label_1_0_split
+I0305 15:41:50.320531 27993 net.cpp:86] Creating Layer ip2_label_1_ip2_label_1_0_split
+I0305 15:41:50.320533 27993 net.cpp:408] ip2_label_1_ip2_label_1_0_split <- ip2_label_1
+I0305 15:41:50.320536 27993 net.cpp:382] ip2_label_1_ip2_label_1_0_split -> ip2_label_1_ip2_label_1_0_split_0
+I0305 15:41:50.320540 27993 net.cpp:382] ip2_label_1_ip2_label_1_0_split -> ip2_label_1_ip2_label_1_0_split_1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+I0305 15:41:50.320569 27993 net.cpp:124] Setting up ip2_label_1_ip2_label_1_0_split
+I0305 15:41:50.320570 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.320572 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.320574 27993 net.cpp:139] Memory required for data: 401558800
+I0305 15:41:50.320575 27993 layer_factory.hpp:77] Creating layer accuracy_1
+I0305 15:41:50.320580 27993 net.cpp:86] Creating Layer accuracy_1
+I0305 15:41:50.320581 27993 net.cpp:408] accuracy_1 <- ip2_label_1_ip2_label_1_0_split_0
+I0305 15:41:50.320585 27993 net.cpp:408] accuracy_1 <- label_1_slice_label_0_split_0
+I0305 15:41:50.320587 27993 net.cpp:382] accuracy_1 -> accuracy_1
+I0305 15:41:50.320591 27993 net.cpp:124] Setting up accuracy_1
+I0305 15:41:50.320593 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.320595 27993 net.cpp:139] Memory required for data: 401558804
+I0305 15:41:50.320596 27993 layer_factory.hpp:77] Creating layer loss_1
+I0305 15:41:50.320600 27993 net.cpp:86] Creating Layer loss_1
+I0305 15:41:50.320601 27993 net.cpp:408] loss_1 <- ip2_label_1_ip2_label_1_0_split_1
+I0305 15:41:50.320603 27993 net.cpp:408] loss_1 <- label_1_slice_label_0_split_1
+I0305 15:41:50.320606 27993 net.cpp:382] loss_1 -> loss_1
+I0305 15:41:50.320611 27993 layer_factory.hpp:77] Creating layer loss_1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.321044 27993 net.cpp:124] Setting up loss_1
+I0305 15:41:50.321049 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.321051 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.321059 27993 net.cpp:139] Memory required for data: 401558808
+I0305 15:41:50.321063 27993 layer_factory.hpp:77] Creating layer ip2_label_2
+I0305 15:41:50.321066 27993 net.cpp:86] Creating Layer ip2_label_2
+I0305 15:41:50.321069 27993 net.cpp:408] ip2_label_2 <- ip1_ip1_0_split_1
+I0305 15:41:50.321074 27993 net.cpp:382] ip2_label_2 -> ip2_label_2
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+I0305 15:41:50.321166 27993 net.cpp:124] Setting up ip2_label_2
+I0305 15:41:50.321171 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321173 27993 net.cpp:139] Memory required for data: 401559208
+I0305 15:41:50.321177 27993 layer_factory.hpp:77] Creating layer ip2_label_2_ip2_label_2_0_split
+I0305 15:41:50.321182 27993 net.cpp:86] Creating Layer ip2_label_2_ip2_label_2_0_split
+I0305 15:41:50.321183 27993 net.cpp:408] ip2_label_2_ip2_label_2_0_split <- ip2_label_2
+I0305 15:41:50.321187 27993 net.cpp:382] ip2_label_2_ip2_label_2_0_split -> ip2_label_2_ip2_label_2_0_split_0
+I0305 15:41:50.321195 27993 net.cpp:382] ip2_label_2_ip2_label_2_0_split -> ip2_label_2_ip2_label_2_0_split_1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+I0305 15:41:50.321224 27993 net.cpp:124] Setting up ip2_label_2_ip2_label_2_0_split
+I0305 15:41:50.321228 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321230 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321231 27993 net.cpp:139] Memory required for data: 401560008
+I0305 15:41:50.321233 27993 layer_factory.hpp:77] Creating layer accuracy_2
+I0305 15:41:50.321236 27993 net.cpp:86] Creating Layer accuracy_2
+I0305 15:41:50.321246 27993 net.cpp:408] accuracy_2 <- ip2_label_2_ip2_label_2_0_split_0
+I0305 15:41:50.321249 27993 net.cpp:408] accuracy_2 <- label_2_slice_label_1_split_0
+I0305 15:41:50.321254 27993 net.cpp:382] accuracy_2 -> accuracy_2
+I0305 15:41:50.321259 27993 net.cpp:124] Setting up accuracy_2
+I0305 15:41:50.321261 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.321262 27993 net.cpp:139] Memory required for data: 401560012
+I0305 15:41:50.321264 27993 layer_factory.hpp:77] Creating layer loss_2
+I0305 15:41:50.321269 27993 net.cpp:86] Creating Layer loss_2
+I0305 15:41:50.321270 27993 net.cpp:408] loss_2 <- ip2_label_2_ip2_label_2_0_split_1
+I0305 15:41:50.321272 27993 net.cpp:408] loss_2 <- label_2_slice_label_1_split_1
+I0305 15:41:50.321275 27993 net.cpp:382] loss_2 -> loss_2
+I0305 15:41:50.321280 27993 layer_factory.hpp:77] Creating layer loss_2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.321471 27993 net.cpp:124] Setting up loss_2
+I0305 15:41:50.321476 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.321478 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.321482 27993 net.cpp:139] Memory required for data: 401560016
+I0305 15:41:50.321485 27993 layer_factory.hpp:77] Creating layer ip2_label_3
+I0305 15:41:50.321490 27993 net.cpp:86] Creating Layer ip2_label_3
+I0305 15:41:50.321492 27993 net.cpp:408] ip2_label_3 <- ip1_ip1_0_split_2
+I0305 15:41:50.321496 27993 net.cpp:382] ip2_label_3 -> ip2_label_3
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+I0305 15:41:50.321573 27993 net.cpp:124] Setting up ip2_label_3
+I0305 15:41:50.321576 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321578 27993 net.cpp:139] Memory required for data: 401560416
+I0305 15:41:50.321581 27993 layer_factory.hpp:77] Creating layer ip2_label_3_ip2_label_3_0_split
+I0305 15:41:50.321585 27993 net.cpp:86] Creating Layer ip2_label_3_ip2_label_3_0_split
+I0305 15:41:50.321588 27993 net.cpp:408] ip2_label_3_ip2_label_3_0_split <- ip2_label_3
+I0305 15:41:50.321590 27993 net.cpp:382] ip2_label_3_ip2_label_3_0_split -> ip2_label_3_ip2_label_3_0_split_0
+I0305 15:41:50.321594 27993 net.cpp:382] ip2_label_3_ip2_label_3_0_split -> ip2_label_3_ip2_label_3_0_split_1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+I0305 15:41:50.321619 27993 net.cpp:124] Setting up ip2_label_3_ip2_label_3_0_split
+I0305 15:41:50.321624 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321624 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.321626 27993 net.cpp:139] Memory required for data: 401561216
+I0305 15:41:50.321627 27993 layer_factory.hpp:77] Creating layer accuracy_3
+I0305 15:41:50.321630 27993 net.cpp:86] Creating Layer accuracy_3
+I0305 15:41:50.321633 27993 net.cpp:408] accuracy_3 <- ip2_label_3_ip2_label_3_0_split_0
+I0305 15:41:50.321635 27993 net.cpp:408] accuracy_3 <- label_3_slice_label_2_split_0
+I0305 15:41:50.321640 27993 net.cpp:382] accuracy_3 -> accuracy_3
+I0305 15:41:50.321643 27993 net.cpp:124] Setting up accuracy_3
+I0305 15:41:50.321646 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.321647 27993 net.cpp:139] Memory required for data: 401561220
+I0305 15:41:50.321648 27993 layer_factory.hpp:77] Creating layer loss_3
+I0305 15:41:50.321651 27993 net.cpp:86] Creating Layer loss_3
+I0305 15:41:50.321653 27993 net.cpp:408] loss_3 <- ip2_label_3_ip2_label_3_0_split_1
+I0305 15:41:50.321655 27993 net.cpp:408] loss_3 <- label_3_slice_label_2_split_1
+I0305 15:41:50.321657 27993 net.cpp:382] loss_3 -> loss_3
+I0305 15:41:50.321662 27993 layer_factory.hpp:77] Creating layer loss_3
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.321985 27993 net.cpp:124] Setting up loss_3
+I0305 15:41:50.321990 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.321992 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.321996 27993 net.cpp:139] Memory required for data: 401561224
+I0305 15:41:50.321998 27993 layer_factory.hpp:77] Creating layer ip2_label_4
+I0305 15:41:50.322002 27993 net.cpp:86] Creating Layer ip2_label_4
+I0305 15:41:50.322005 27993 net.cpp:408] ip2_label_4 <- ip1_ip1_0_split_3
+I0305 15:41:50.322008 27993 net.cpp:382] ip2_label_4 -> ip2_label_4
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+I0305 15:41:50.322083 27993 net.cpp:124] Setting up ip2_label_4
+I0305 15:41:50.322088 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.322098 27993 net.cpp:139] Memory required for data: 401561624
+I0305 15:41:50.322105 27993 layer_factory.hpp:77] Creating layer ip2_label_4_ip2_label_4_0_split
+I0305 15:41:50.322110 27993 net.cpp:86] Creating Layer ip2_label_4_ip2_label_4_0_split
+I0305 15:41:50.322113 27993 net.cpp:408] ip2_label_4_ip2_label_4_0_split <- ip2_label_4
+I0305 15:41:50.322116 27993 net.cpp:382] ip2_label_4_ip2_label_4_0_split -> ip2_label_4_ip2_label_4_0_split_0
+I0305 15:41:50.322120 27993 net.cpp:382] ip2_label_4_ip2_label_4_0_split -> ip2_label_4_ip2_label_4_0_split_1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+I0305 15:41:50.322147 27993 net.cpp:124] Setting up ip2_label_4_ip2_label_4_0_split
+I0305 15:41:50.322150 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.322152 27993 net.cpp:131] Top shape: 50 2 (100)
+I0305 15:41:50.322154 27993 net.cpp:139] Memory required for data: 401562424
+I0305 15:41:50.322155 27993 layer_factory.hpp:77] Creating layer accuracy_4
+I0305 15:41:50.322161 27993 net.cpp:86] Creating Layer accuracy_4
+I0305 15:41:50.322165 27993 net.cpp:408] accuracy_4 <- ip2_label_4_ip2_label_4_0_split_0
+I0305 15:41:50.322166 27993 net.cpp:408] accuracy_4 <- label_4_slice_label_3_split_0
+I0305 15:41:50.322170 27993 net.cpp:382] accuracy_4 -> accuracy_4
+I0305 15:41:50.322173 27993 net.cpp:124] Setting up accuracy_4
+I0305 15:41:50.322176 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.322177 27993 net.cpp:139] Memory required for data: 401562428
+I0305 15:41:50.322180 27993 layer_factory.hpp:77] Creating layer loss_4
+I0305 15:41:50.322182 27993 net.cpp:86] Creating Layer loss_4
+I0305 15:41:50.322185 27993 net.cpp:408] loss_4 <- ip2_label_4_ip2_label_4_0_split_1
+I0305 15:41:50.322186 27993 net.cpp:408] loss_4 <- label_4_slice_label_3_split_1
+I0305 15:41:50.322188 27993 net.cpp:382] loss_4 -> loss_4
+I0305 15:41:50.322192 27993 layer_factory.hpp:77] Creating layer loss_4
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.322371 27993 net.cpp:124] Setting up loss_4
+I0305 15:41:50.322376 27993 net.cpp:131] Top shape: (1)
+I0305 15:41:50.322377 27993 net.cpp:134]     with loss weight 1
+I0305 15:41:50.322381 27993 net.cpp:139] Memory required for data: 401562432
+I0305 15:41:50.322382 27993 net.cpp:200] loss_4 needs backward computation.
+I0305 15:41:50.322386 27993 net.cpp:202] accuracy_4 does not need backward computation.
+I0305 15:41:50.322387 27993 net.cpp:200] ip2_label_4_ip2_label_4_0_split needs backward computation.
+I0305 15:41:50.322388 27993 net.cpp:200] ip2_label_4 needs backward computation.
+I0305 15:41:50.322391 27993 net.cpp:200] loss_3 needs backward computation.
+I0305 15:41:50.322393 27993 net.cpp:202] accuracy_3 does not need backward computation.
+I0305 15:41:50.322396 27993 net.cpp:200] ip2_label_3_ip2_label_3_0_split needs backward computation.
+I0305 15:41:50.322397 27993 net.cpp:200] ip2_label_3 needs backward computation.
+I0305 15:41:50.322398 27993 net.cpp:200] loss_2 needs backward computation.
+I0305 15:41:50.322402 27993 net.cpp:202] accuracy_2 does not need backward computation.
+I0305 15:41:50.322403 27993 net.cpp:200] ip2_label_2_ip2_label_2_0_split needs backward computation.
+I0305 15:41:50.322405 27993 net.cpp:200] ip2_label_2 needs backward computation.
+I0305 15:41:50.322407 27993 net.cpp:200] loss_1 needs backward computation.
+I0305 15:41:50.322409 27993 net.cpp:202] accuracy_1 does not need backward computation.
+I0305 15:41:50.322412 27993 net.cpp:200] ip2_label_1_ip2_label_1_0_split needs backward computation.
+I0305 15:41:50.322413 27993 net.cpp:200] ip2_label_1 needs backward computation.
+I0305 15:41:50.322415 27993 net.cpp:200] ip1_ip1_0_split needs backward computation.
+I0305 15:41:50.322417 27993 net.cpp:200] ip1 needs backward computation.
+I0305 15:41:50.322418 27993 net.cpp:200] conv4 needs backward computation.
+I0305 15:41:50.322420 27993 net.cpp:200] relu3 needs backward computation.
+I0305 15:41:50.322422 27993 net.cpp:200] pool3 needs backward computation.
+I0305 15:41:50.322423 27993 net.cpp:200] conv3 needs backward computation.
+I0305 15:41:50.322427 27993 net.cpp:200] relu2 needs backward computation.
+I0305 15:41:50.322427 27993 net.cpp:200] pool2 needs backward computation.
+I0305 15:41:50.322438 27993 net.cpp:200] conv2 needs backward computation.
+I0305 15:41:50.322439 27993 net.cpp:200] relu1 needs backward computation.
+I0305 15:41:50.322441 27993 net.cpp:200] pool1 needs backward computation.
+I0305 15:41:50.322443 27993 net.cpp:200] conv1 needs backward computation.
+I0305 15:41:50.322444 27993 net.cpp:202] label_4_slice_label_3_split does not need backward computation.
+I0305 15:41:50.322448 27993 net.cpp:202] label_3_slice_label_2_split does not need backward computation.
+I0305 15:41:50.322449 27993 net.cpp:202] label_2_slice_label_1_split does not need backward computation.
+I0305 15:41:50.322451 27993 net.cpp:202] label_1_slice_label_0_split does not need backward computation.
+I0305 15:41:50.322454 27993 net.cpp:202] slice_label does not need backward computation.
+I0305 15:41:50.322456 27993 net.cpp:202] data does not need backward computation.
+I0305 15:41:50.322458 27993 net.cpp:244] This network produces output accuracy_1
+I0305 15:41:50.322459 27993 net.cpp:244] This network produces output accuracy_2
+I0305 15:41:50.322461 27993 net.cpp:244] This network produces output accuracy_3
+I0305 15:41:50.322463 27993 net.cpp:244] This network produces output accuracy_4
+I0305 15:41:50.322464 27993 net.cpp:244] This network produces output loss_1
+I0305 15:41:50.322466 27993 net.cpp:244] This network produces output loss_2
+I0305 15:41:50.322468 27993 net.cpp:244] This network produces output loss_3
+I0305 15:41:50.322469 27993 net.cpp:244] This network produces output loss_4
+I0305 15:41:50.322489 27993 net.cpp:257] Network initialization done.
+I0305 15:41:50.322569 27993 solver.cpp:56] Solver scaffolding done.
+shape[0] = 20
+shape[1] = 3
+shape[2] = 4
+shape[3] = 4
+shape[0] = 20
+shape[1] = 3
+shape[2] = 4
+shape[3] = 4
+shape[0] = 20
+shape[1] = 3
+shape[2] = 4
+shape[3] = 4
+shape[0] = 20
+shape[0] = 20
+shape[0] = 20
+shape[0] = 40
+shape[1] = 20
+shape[2] = 3
+shape[3] = 3
+shape[0] = 40
+shape[1] = 20
+shape[2] = 3
+shape[3] = 3
+shape[0] = 40
+shape[1] = 20
+shape[2] = 3
+shape[3] = 3
+shape[0] = 40
+shape[0] = 40
+shape[0] = 40
+shape[0] = 60
+shape[1] = 40
+shape[2] = 5
+shape[3] = 5
+shape[0] = 60
+shape[1] = 40
+shape[2] = 5
+shape[3] = 5
+shape[0] = 60
+shape[1] = 40
+shape[2] = 5
+shape[3] = 5
+shape[0] = 60
+shape[0] = 60
+shape[0] = 60
+shape[0] = 80
+shape[1] = 60
+shape[2] = 2
+shape[3] = 2
+shape[0] = 80
+shape[1] = 60
+shape[2] = 2
+shape[3] = 2
+shape[0] = 80
+shape[1] = 60
+shape[2] = 2
+shape[3] = 2
+shape[0] = 80
+shape[0] = 80
+shape[0] = 80
+shape[0] = 120
+shape[1] = 36480
+shape[0] = 120
+shape[1] = 36480
+shape[0] = 120
+shape[1] = 36480
+shape[0] = 120
+shape[0] = 120
+shape[0] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[1] = 120
+shape[0] = 2
+shape[0] = 2
+shape[0] = 2
+I0305 15:41:50.323084 27993 caffe.cpp:248] Starting Optimization
+I0305 15:41:50.323089 27993 solver.cpp:273] Solving bupt_wangnet
+I0305 15:41:50.323091 27993 solver.cpp:274] Learning Rate Policy: step
+I0305 15:41:50.326351 27993 solver.cpp:331] Iteration 0, Testing net (#0)
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+I0305 15:41:50.350306 27993 blocking_queue.cpp:49] Waiting for data
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 256
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[shape[00] = ] = 501
+shape[1] = 120
+shape[0] = 50
+
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 4
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 20
+shape[2] = 215
+shape[3] = 175
+shape[0] = 3
+shape[0] = 48
+shape[1] = 215
+shape[2] = 175
+shape[0] = 37625
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 20
+shape[2] = 108
+shape[3] = 88
+shape[0] = 50
+shape[1] = 40
+shape[2] = 106
+shape[3] = 86
+shape[0] = 3
+shape[0] = 180
+shape[1] = 106
+shape[2] = 86
+shape[0] = 9116
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 40
+shape[2] = 53
+shape[3] = 43
+shape[0] = 50
+shape[1] = 60
+shape[2] = 49
+shape[3] = 39
+shape[0] = 3
+shape[0] = 1000
+shape[1] = 49
+shape[2] = 39
+shape[0] = 1911
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 60
+shape[2] = 25
+shape[3] = 20
+shape[0] = 50
+shape[1] = 80
+shape[2] = 24
+shape[3] = 19
+shape[0] = 3
+shape[0] = 240
+shape[1] = 24
+shape[2] = 19
+shape[0] = 456
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[0] = 1
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 3
+shape[2] = 218
+shape[3] = 178
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 120
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
+shape[0] = 50
+shape[1] = 2
+shape[0] = 2
+shape[0] = 50
+shape[1] = 1
