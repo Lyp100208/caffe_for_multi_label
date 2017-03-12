@@ -35,6 +35,7 @@ message Datum {
   optional bytes data = 4;
 
   // optional int32 label = 5;
+  // multi-label
   repeated int32 label = 5;
 
   // Optionally, the datum could also hold float data.

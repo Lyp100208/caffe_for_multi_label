@@ -1,0 +1,602 @@
+src/caffe/test/test_memory_data_layer.cpp: In member function ‘virtual void caffe::MemoryDataLayerTest_TestForward_Test<gtest_TypeParam_>::TestBody()’:
+src/caffe/test/test_memory_data_layer.cpp:112:3: error: expected ‘;’ before ‘shared_ptr’
+   shared_ptr<MemoryDataLayer<Dtype> > layer(
+   ^
+src/caffe/test/test_memory_data_layer.cpp:114:3: error: ‘layer’ was not declared in this scope
+   layer->DataLayerSetUp(this->blob_bottom_vec_, this->blob_top_vec_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In member function ‘virtual void caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody()’:
+src/caffe/test/test_memory_data_layer.cpp:146:3: error: ‘md_param’ was not declared in this scope
+   md_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:149:3: error: ‘layer’ was not declared in this scope
+   layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp:164:5: error: expected ‘;’ before ‘}’ token
+     }
+     ^
+src/caffe/test/test_memory_data_layer.cpp: In member function ‘virtual void caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody()’:
+src/caffe/test/test_memory_data_layer.cpp:216:3: error: expected ‘;’ before ‘MemoryDataLayer’
+   MemoryDataLayer<Dtype> layer(param);
+   ^
+src/caffe/test/test_memory_data_layer.cpp:217:3: error: ‘layer’ was not declared in this scope
+   layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp:249:61: error: ‘dim_label_’ was not declared in this scope
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                                             ^
+src/caffe/test/test_memory_data_layer.cpp: In member function ‘virtual void caffe::MemoryDataLayerTest_TestSetBatchSize_Test<gtest_TypeParam_>::TestBody()’:
+src/caffe/test/test_memory_data_layer.cpp:279:3: error: expected ‘;’ before ‘MemoryDataLayer’
+   MemoryDataLayer<Dtype> layer(param);
+   ^
+src/caffe/test/test_memory_data_layer.cpp:280:3: error: ‘layer’ was not declared in this scope
+   layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp:291:31: error: invalid types ‘int[int]’ for array subscript
+       label_vector[i][label_id] = i + label_id;
+                               ^
+src/caffe/test/test_memory_data_layer.cpp:308:61: error: ‘dim_label_’ was not declared in this scope
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                                             ^
+src/caffe/test/test_memory_data_layer.cpp:338:31: error: invalid types ‘int[int]’ for array subscript
+       label_vector[i][label_id] = i + label_id;
+                               ^
+src/caffe/test/test_memory_data_layer.cpp:356:61: error: ‘dim_label_’ was not declared in this scope
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                                             ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest<TypeParam>::SetUp() [with TypeParam = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:33:22: error: ‘class caffe::MemoryDataLayerTest<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     this->dim_label_ = 4;
+                      ^
+src/caffe/test/test_memory_data_layer.cpp:41:5: error: ‘class caffe::MemoryDataLayerTest<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     labels_->Reshape(this->batches_ * this->batch_size_, this->dim_label_, 1, 1);
+     ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetBatchSize_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:277:3: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:290:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:308:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:309:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:309:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp:337:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:356:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:357:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:357:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:214:3: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:231:37: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:249:39: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:250:74: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:250:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:162:37: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:186:39: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:187:74: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:187:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestForward_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:110:3: error: ‘class caffe::MemoryDataLayerTest_TestForward_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetup_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:82:3: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_);
+   ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+./src/gtest/gtest.h:18969:28: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::GPUDevice<double> >’ has no member named ‘dim_label_’
+   GTEST_ASSERT_(pred_format(#v1, #v2, v1, v2),\
+                            ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:94:3: note: in expansion of macro ‘EXPECT_EQ’
+   EXPECT_EQ(this->label_blob_->channels(), this->dim_label_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest<TypeParam>::SetUp() [with TypeParam = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:33:22: error: ‘class caffe::MemoryDataLayerTest<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     this->dim_label_ = 4;
+                      ^
+src/caffe/test/test_memory_data_layer.cpp:41:5: error: ‘class caffe::MemoryDataLayerTest<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     labels_->Reshape(this->batches_ * this->batch_size_, this->dim_label_, 1, 1);
+     ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetBatchSize_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:277:3: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:290:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:308:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:309:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:309:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp:337:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:356:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:357:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:357:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:214:3: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:231:37: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:249:39: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:250:74: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:250:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:162:37: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:186:39: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:187:74: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:187:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestForward_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:110:3: error: ‘class caffe::MemoryDataLayerTest_TestForward_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetup_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::GPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:82:3: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_);
+   ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+./src/gtest/gtest.h:18969:28: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::GPUDevice<float> >’ has no member named ‘dim_label_’
+   GTEST_ASSERT_(pred_format(#v1, #v2, v1, v2),\
+                            ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:94:3: note: in expansion of macro ‘EXPECT_EQ’
+   EXPECT_EQ(this->label_blob_->channels(), this->dim_label_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest<TypeParam>::SetUp() [with TypeParam = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:33:22: error: ‘class caffe::MemoryDataLayerTest<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     this->dim_label_ = 4;
+                      ^
+src/caffe/test/test_memory_data_layer.cpp:41:5: error: ‘class caffe::MemoryDataLayerTest<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     labels_->Reshape(this->batches_ * this->batch_size_, this->dim_label_, 1, 1);
+     ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetBatchSize_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:277:3: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:290:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:308:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:309:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:309:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp:337:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:356:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:357:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:357:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:214:3: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:231:37: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:249:39: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:250:74: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:250:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:162:37: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:186:39: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:187:74: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:187:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestForward_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:110:3: error: ‘class caffe::MemoryDataLayerTest_TestForward_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetup_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<double>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:82:3: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_);
+   ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+./src/gtest/gtest.h:18969:28: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::CPUDevice<double> >’ has no member named ‘dim_label_’
+   GTEST_ASSERT_(pred_format(#v1, #v2, v1, v2),\
+                            ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:94:3: note: in expansion of macro ‘EXPECT_EQ’
+   EXPECT_EQ(this->label_blob_->channels(), this->dim_label_);
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest<TypeParam>::SetUp() [with TypeParam = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:33:22: error: ‘class caffe::MemoryDataLayerTest<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     this->dim_label_ = 4;
+                      ^
+src/caffe/test/test_memory_data_layer.cpp:41:5: error: ‘class caffe::MemoryDataLayerTest<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     labels_->Reshape(this->batches_ * this->batch_size_, this->dim_label_, 1, 1);
+     ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetBatchSize_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:277:3: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:290:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:308:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:309:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:309:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp:337:37: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:356:39: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:357:74: error: ‘class caffe::MemoryDataLayerTest_TestSetBatchSize_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:357:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:214:3: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+   memory_data_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp:231:37: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:249:39: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++dim_label_) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:250:74: error: ‘class caffe::MemoryDataLayerTest_AddMatVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:250:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:162:37: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+     for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                     ^
+src/caffe/test/test_memory_data_layer.cpp:186:39: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+       for (int label_id = 0; label_id < this->dim_label_; ++label_id) {
+                                       ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+src/caffe/test/test_memory_data_layer.cpp:187:74: error: ‘class caffe::MemoryDataLayerTest_AddDatumVectorDefaultTransform_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+                                                                          ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:187:9: note: in expansion of macro ‘EXPECT_EQ’
+         EXPECT_EQ(offset + i + label_id, this->label_blob_->cpu_data()[i * this->dim_label_ + label_id]);  
+         ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestForward_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:110:3: error: ‘class caffe::MemoryDataLayerTest_TestForward_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_)
+   ^
+src/caffe/test/test_memory_data_layer.cpp: In instantiation of ‘void caffe::MemoryDataLayerTest_TestSetup_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = caffe::CPUDevice<float>]’:
+src/caffe/test/test_memory_data_layer.cpp:375:1:   required from here
+src/caffe/test/test_memory_data_layer.cpp:82:3: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+   md_param->set_dim_label(this->dim_label_);
+   ^
+In file included from ./include/caffe/test/test_caffe_main.hpp:7:0,
+                 from src/caffe/test/test_memory_data_layer.cpp:11:
+./src/gtest/gtest.h:18969:28: error: ‘class caffe::MemoryDataLayerTest_TestSetup_Test<caffe::CPUDevice<float> >’ has no member named ‘dim_label_’
+   GTEST_ASSERT_(pred_format(#v1, #v2, v1, v2),\
+                            ^
+./src/gtest/gtest.h:18899:52: note: in definition of macro ‘GTEST_ASSERT_’
+   if (const ::testing::AssertionResult gtest_ar = (expression)) \
+                                                    ^
+./src/gtest/gtest.h:18984:3: note: in expansion of macro ‘GTEST_PRED_FORMAT2_’
+   GTEST_PRED_FORMAT2_(pred_format, v1, v2, GTEST_NONFATAL_FAILURE_)
+   ^
+./src/gtest/gtest.h:19229:3: note: in expansion of macro ‘EXPECT_PRED_FORMAT2’
+   EXPECT_PRED_FORMAT2(::testing::internal:: \
+   ^
+src/caffe/test/test_memory_data_layer.cpp:94:3: note: in expansion of macro ‘EXPECT_EQ’
+   EXPECT_EQ(this->label_blob_->channels(), this->dim_label_);
+   ^

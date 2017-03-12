@@ -15,17 +15,43 @@
 
 namespace caffe {
 
-void FillDatum(const int label, const int channels, const int height,
+// void FillDatum(const int label, const int channels, const int height,
+//   const int width, const bool unique_pixels, Datum * datum) {
+//   datum->set_label(label);
+//   datum->set_channels(channels);
+//   datum->set_height(height);
+//   datum->set_width(width);
+//   int size = channels * height * width;
+//   std::string* data = datum->mutable_data();
+//   for (int j = 0; j < size; ++j) {
+//     int datum = unique_pixels ? j : label;
+//     data->push_back(static_cast<uint8_t>(datum));
+//   }
+// }
+
+// multi_label
+void FillDatum(const vector<int> labels, const int channels, const int height,
   const int width, const bool unique_pixels, Datum * datum) {
-  datum->set_label(label);
+  
+  for(int label_id = 0; label_id < labels.size(); label_id++) {
+    datum->add_label(labels[label_id]);  
+  }
+  
   datum->set_channels(channels);
   datum->set_height(height);
   datum->set_width(width);
   int size = channels * height * width;
   std::string* data = datum->mutable_data();
   for (int j = 0; j < size; ++j) {
-    int datum = unique_pixels ? j : label;
+
+    // int datum = unique_pixels ? j : label;
+    // data->push_back(static_cast<uint8_t>(datum));
+    // multi-label
+    for(int label_id = 0; label_id < labels.size(); label_id++) {
+    int datum = unique_pixels ? j : labels[label_id];
     data->push_back(static_cast<uint8_t>(datum));
+    }
+
   }
 }
 
@@ -78,13 +104,20 @@ TYPED_TEST_CASE(DataTransformTest, TestDtypes);
 TYPED_TEST(DataTransformTest, TestEmptyTransform) {
   TransformationParameter transform_param;
   const bool unique_pixels = false;  // all pixels the same equal to label
-  const int label = 0;
+  
+  // const int label = 0;
+  vector<int> labels(4, 0);
+
   const int channels = 3;
   const int height = 4;
   const int width = 5;
 
   Datum datum;
-  FillDatum(label, channels, height, width, unique_pixels, &datum);
+  
+  // FillDatum(label, channels, height, width, unique_pixels, &datum);
+  // multi-label
+  FillDatum(labels, channels, height, width, unique_pixels, &datum);
+
   Blob<TypeParam> blob(1, channels, height, width);
   DataTransformer<TypeParam> transformer(transform_param, TEST);
   transformer.InitRand();
@@ -94,7 +127,12 @@ TYPED_TEST(DataTransformTest, TestEmptyTransform) {
   EXPECT_EQ(blob.height(), datum.height());
   EXPECT_EQ(blob.width(), datum.width());
   for (int j = 0; j < blob.count(); ++j) {
-    EXPECT_EQ(blob.cpu_data()[j], label);
+    
+    // EXPECT_EQ(blob.cpu_data()[j], label);
+    for(int label_id = 0; label_id < 4; label_id++) {
+      EXPECT_EQ(blob.cpu_data()[j * 4 + label_id], 0);
+    }
+
   }
 }
 

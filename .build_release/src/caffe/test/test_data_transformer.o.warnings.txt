@@ -1,0 +1,13 @@
+src/caffe/test/test_data_transformer.cpp: In function ‘void caffe::FillDatum(int, int, int, int, bool, caffe::Datum*)’:
+src/caffe/test/test_data_transformer.cpp:20:25: error: no matching function for call to ‘caffe::Datum::set_label(const int&)’
+   datum->set_label(label);
+                         ^
+In file included from ./include/caffe/util/cudnn.hpp:8:0,
+                 from ./include/caffe/util/device_alternate.hpp:40,
+                 from ./include/caffe/common.hpp:19,
+                 from ./include/caffe/blob.hpp:8,
+                 from src/caffe/test/test_data_transformer.cpp:7:
+.build_release/src/caffe/proto/caffe.pb.h:10739:13: note: candidate: void caffe::Datum::set_label(int, google::protobuf::int32)
+ inline void Datum::set_label(int index, ::google::protobuf::int32 value) {
+             ^
+.build_release/src/caffe/proto/caffe.pb.h:10739:13: note:   candidate expects 2 arguments, 1 provided

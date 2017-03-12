@@ -43,12 +43,15 @@ class MemoryDataLayer : public BaseDataLayer<Dtype> {
   int channels() { return this->channels_; }
   int height() { return this->height_; }
   int width() { return this->width_; }
+  // multi-label
   int dim_label() {return this->dim_label_; }
 
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
+  // int batch_size_, channels_, height_, width_, size_;
+  // multi-label
   int batch_size_, channels_, height_, width_, dim_label_, size_;
   Dtype* data_;
   Dtype* labels_;

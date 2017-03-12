@@ -23,10 +23,13 @@ void MemoryDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       " positive in memory_data_param";
   // multi-label
   // vector<int> label_shape(1, this->batch_size_);
-  vector<int> label_shape(this->dim_label_, this->batch_size_);
-  top[0]->Reshape(batch_size_, channels_, height_, width_);
+  // vector<int> label_shape(this->dim_label_, this->batch_size_);
+  vector<int> label_shape(2)
+  label_shape[0] = this->batch_size_
+  label_shape[1] = this->dim_label_
+  top[0]->Reshape(this->batch_size_, this->channels_, this->height_, this->width_);
   top[1]->Reshape(label_shape);
-  this->added_data_.Reshape(batch_size_, channels_, height_, width_);
+  this->added_data_.Reshape(this->batch_size_, this->channels_, this->height_, this->width_);
   this->added_label_.Reshape(label_shape);
   this->data_ = NULL;
   this->labels_ = NULL;
@@ -42,10 +45,10 @@ void MemoryDataLayer<Dtype>::AddDatumVector(const vector<Datum>& datum_vector) {
   CHECK_GT(num, 0) << "There is no datum to add.";
   CHECK_EQ(num % this->batch_size_, 0) <<
       "The added data must be a multiple of the batch size.";
-  added_data_.Reshape(num, this->channels_, this->height_, this->width_);
+  this->added_data_.Reshape(num, this->channels_, this->height_, this->width_);
   // multi-label
   // added_label_.Reshape(num, 1, 1, 1);
-  added_label_.Reshape(num, this->dim_label_, 1, 1);
+  this->added_label_.Reshape(num, this->dim_label_, 1, 1);
   // Apply data transformations (mirror, scale, crop...)
   this->data_transformer_->Transform(datum_vector, &added_data_);
   // Copy Labels
@@ -76,9 +79,9 @@ void MemoryDataLayer<Dtype>::AddMatVector(const vector<cv::Mat>& mat_vector,
   CHECK_GT(num, 0) << "There is no mat to add";
   CHECK_EQ(num % this->batch_size_, 0) <<
       "The added data must be a multiple of the batch size.";
-  added_data_.Reshape(num, this->channels_, this->height_, this->width_);
+  this->added_data_.Reshape(num, this->channels_, this->height_, this->width_);
   // added_label_.Reshape(num, 1, 1, 1);
-  added_label_.Reshape(num, this->dim_label_, 1, 1);
+  this->added_label_.Reshape(num, this->dim_label_, 1, 1);
   // Apply data transformations (mirror, scale, crop...)
   this->data_transformer_->Transform(mat_vector, &added_data_);
   // Copy Labels
@@ -119,7 +122,7 @@ void MemoryDataLayer<Dtype>::Reset(Dtype* data, Dtype* labels, int n) {
 
 template <typename Dtype>
 void MemoryDataLayer<Dtype>::set_batch_size(int new_size) {
-  CHECK(!has_new_data_) <<
+  CHECK(!this->has_new_data_) <<
       "Can't change batch_size until current data has been consumed.";
   this->batch_size_ = new_size;
   this->added_data_.Reshape(this->batch_size_, this->channels_, this->height_, this->width_);
